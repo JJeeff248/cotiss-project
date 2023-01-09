@@ -44,7 +44,10 @@ This was to be completed using only the Amazon Web Services (AWS) free tier.
 
 ### Walkthrough - Level 1
 
- 1. Create a base frontend
+ 1. Create base frontend and backend webpages
+    - I decided to use PHP for the backend as it is a simple language and I have used it before
+    - I also added in a simple "rating" to go with the feedback. It has the options of "Good", "Bad" and "Neutral". I did this to allow for filtering and easier analysis of the feedback. One potential drawback of this solution is feedback getting ignored due to focussing too much on the rating.
+    - When writing the backend php script I had to find a way to make unique partition keys for the DynamoDB table. I decided to make an auto increment system. This is not a good solution as it is slow and not how DynamoDB tables should be made. I would like to find a better solution to this.
  2. Create VPC with an internet gateway and route table that includes the default route and the internet gateway
  3. Make a table in DynamoDB using `id` as the partition key
  4. Make an IAM role that allows DyanmoDB Read/ Write access
