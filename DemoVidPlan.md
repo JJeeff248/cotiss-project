@@ -14,6 +14,8 @@
   - [Steps Taken](#steps-taken)
   - [Walkthrough - Level 1](#walkthrough---level-1)
     - [Additional notes - Level 1](#additional-notes---level-1)
+  - [Walkthrough - Level 2](#walkthrough---level-2)
+    - [Additional notes - Level 2](#additional-notes---level-2)
 
 ## Restrictions
 
@@ -73,3 +75,55 @@ This was to be completed using only the Amazon Web Services (AWS) free tier.
     - Select "Create Target Group"
 14. Add a DynamoDB endpoint to the VPC
 15. Confirm the newly launched EC2 instance can access the DynamoDB table and that the webpage is displaying correctly
+
+### Additional notes - Level 1
+
+- Initially, the EC2 instance couldn't access the DynamoDB table. This was originally fixed by giving the EC2 a public IPv4 address but this solution didn't seem like a good one or the right one. I then found that I could add a DynamoDB endpoint to the VPC and this fixed the issue without the EC2 having a public IP address.
+
+## Walkthrough - Level 2
+
+1. Write a new file called `composer.json` and define the AWS PHP SDK version
+2. Zip the composer and webpage files together
+3. Create a DynamoDB table with a composite key of `id` or use the one made in level 1
+4. Create a new Elastic Beanstalk application
+5. Make a new web server environment
+    - Select PHP as the platform
+    - Upload the zip file
+    - Change the proxy server to Apache
+    - Change environment type to load balanced
+    - This is where you can turn on monitoring of health status
+    - Select the VPC made in level 1 and confirm instances will have public IPv4 addresses
+6. Find the IAM profile made by the elastic beanstalk and add the restrictive DynamoDB policy to it
+7. Confirm the webpage is working correctly
+8. Make an S3 bucket and upload some images
+9. Include the images on the webpage
+10. Zip together the new webpage files with the composer.json file
+11. Deploy the new webserver version
+12. Request a new SSL certificate in AWS Certificate Manager
+    - Add the domain names
+      - cotiss.chris-sa.com
+      - static.chris-sa.com
+    - Wait for the certificate to be issued
+13. Create a new distribution in CloudFront
+    - Select the Elastic Load Balancer linked to the Elastic Beanstalk as the origin
+    - Choose `GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE` under the HTTP methods
+    - Pick `CachingDisabled` under the cache and origin request settings
+    - Add an alternate domain name
+    - Select the SSL certificate created in step 12
+14. Create a behavior in the distribution for all items to redirect HTTP to HTTPS
+15. Create another distribution in CloudFront
+    - Select the S3 bucket as the origin
+    - Add an alternate domain name
+    - Select the SSL certificate created in step 12
+16. In Route 53, add the two CloudFront distributions as aliases with a record of type A
+17. Confirm the webpage is working correctly from the new domain name
+
+### Additional notes - Level 2
+
+- At first, the Elastic Beanstalk could not access the DynamoDB table giving a `Credentials Error`, the same as in level 1.
+- It wasn't a VPC or IP address issue though as the endpoint still existed in the VPC and the instances had a public IPv4 address.
+- Through research and digging I learned you can supply the composer.json file with the zip file to install the AWS PHP SDK version you want.
+- Even after doing this it still gave the same error.
+- Spent over a week trying to resolve the issue.
+- Turned out I had entered the incorrect SDK version in the composer file.
+- After integrating CloudFront the random feedback stopped randomizing. This turned out to be because CloudFront had cached the webpage and was serving the same page to everyone. This was fixed by disabling caching in the CloudFront distribution.
