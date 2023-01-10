@@ -30,8 +30,7 @@
 
 ## Situation
 
-Cotiss has asked for an "Honest feedback" form where end users can share anonymous feedback about their interactions with the company.
-That could be as an employee or a third party.
+Cotiss has asked for an "Honest feedback" form where employees can comfortably share honest and anonymous feedback about the company.
 
 ## Task
 
