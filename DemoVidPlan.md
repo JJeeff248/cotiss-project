@@ -9,10 +9,10 @@
   - [Restrictions](#restrictions)
   - [Important Points](#important-points)
   - [Outline](#outline)
-    - [Situation](#situation)
-    - [Task](#task)
-    - [Steps Taken](#steps-taken)
-    - [Walkthrough - Level 1](#walkthrough---level-1)
+  - [Situation](#situation)
+  - [Task](#task)
+  - [Steps Taken](#steps-taken)
+  - [Walkthrough - Level 1](#walkthrough---level-1)
 
 ## Restrictions
 
@@ -26,23 +26,23 @@
 
 ## Outline
 
-### Situation
+## Situation
 
 Cotiss has asked for an "Honest feedback" form where end users can share anonymous feedback about their interactions with the company.
 That could be as an employee or a third party.
 
-### Task
+## Task
 
 Create a simple webpage that displays a random piece of feedback and allows the user to submit some feedback anonymously.  
 
 This was to be completed using only the Amazon Web Services (AWS) free tier.
 
-### Steps Taken
+## Steps Taken
 
  1. Talked about our basic outline of what and how we wanted to approach the levels. (Set level 2/3 as our goal)
  2. Tried to follow the provided structure for steps and checkpoints. We found that we completed level one much faster than the outline stated but we got stuck on level two for longer than anticipated.
 
-### Walkthrough - Level 1
+## Walkthrough - Level 1
 
  1. Create base frontend and backend webpages
     - I decided to use PHP for the backend as it is a simple language and I have used it before
