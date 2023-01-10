@@ -16,6 +16,7 @@
     - [Additional notes - Level 1](#additional-notes---level-1)
   - [Walkthrough - Level 2](#walkthrough---level-2)
     - [Additional notes - Level 2](#additional-notes---level-2)
+  - [Final thoughts](#final-thoughts)
 
 ## Restrictions
 
@@ -127,3 +128,7 @@ This was to be completed using only the Amazon Web Services (AWS) free tier.
 - Spent over a week trying to resolve the issue.
 - Turned out I had entered the incorrect SDK version in the composer file.
 - After integrating CloudFront the random feedback stopped randomizing. This turned out to be because CloudFront had cached the webpage and was serving the same page to everyone. This was fixed by disabling caching in the CloudFront distribution.
+
+## Final thoughts
+
+That is all. A quick look at two different ways to implement an honest feedback form using AWS. Thank you for watching and I hope you enjoyed it. If you have any questions or suggestions please let me know in the comments or on my [GitHub](https://github.com/JJeeff248/cotiss-project) linked below.
