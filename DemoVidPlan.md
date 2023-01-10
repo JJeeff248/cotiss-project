@@ -8,7 +8,6 @@
   - [Table of Contents](#table-of-contents)
   - [Restrictions](#restrictions)
   - [Important Points](#important-points)
-  - [Outline](#outline)
   - [Situation](#situation)
   - [Task](#task)
   - [Steps Taken](#steps-taken)
@@ -28,8 +27,6 @@
 - Added "Rating" to comments to allow for filtering/analyses of the feedback (Additional)
 - Having the level 1 EC2 interact with DynamoDB (Difficult)
 - Having the EC2 created by Elastic Beanstalk interact with DynamoDB (Difficult)
-
-## Outline
 
 ## Situation
 
