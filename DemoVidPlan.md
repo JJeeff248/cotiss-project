@@ -21,9 +21,10 @@
 
 ## Important Points
 
-- Having the EC2 created by Elastic Beanstalk interact with DynamoDB (Difficult)
 - Adding in auto-increment (Don't like the solution. Should look for another way to have unique keys and stay anonyms)
 - Added "Rating" to comments to allow for filtering/analyses of the feedback (Additional)
+- Having the level 1 EC2 interact with DynamoDB (Difficult)
+- Having the EC2 created by Elastic Beanstalk interact with DynamoDB (Difficult)
 
 ## Outline
 
