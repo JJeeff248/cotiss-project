@@ -38,6 +38,7 @@ Objectives of the product.
     - [Route 53](#route-53)
     - [Redeploy](#redeploy)
     - [Clean up (Level two)](#clean-up-level-two)
+  - [Cost estimate](#cost-estimate)
   - [References](#references)
 
 ## Outline
@@ -202,6 +203,11 @@ Objectives of level two.
 - Delete S3 bucket (both buckets)
 - Delete Route 53 hosted zone or records
 - Delete Certificate
+
+## Cost estimate
+
+- Level one vs level two
+- How to reduce costs
 
 ## References
 
