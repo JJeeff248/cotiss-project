@@ -41,6 +41,8 @@
       - [Static bucket distribution](#static-bucket-distribution)
       - [Elastic Beanstalk distribution](#elastic-beanstalk-distribution)
     - [Route 53](#route-53)
+  - [Cost analysis](#cost-analysis)
+    - [Level 1](#level-1)
 
 ## Project Overview
 
@@ -555,3 +557,26 @@ The goal of level 1 is to deploy the feedback system on Auto Scaling EC2 instanc
 15. Check the website is working by visiting `cotiss.your-domain.com`.
 
 ![A screenshot displaying the website](./images/final_website.PNG)
+
+## Cost analysis
+
+All prices are in USD unless otherwise stated. Prices are current as of 2023-01-15. The yearly cost is based on 8760 hours in a year.
+
+### Level 1
+
+| Service               | Cost month | Cost year | Upfront Cost | Number of instances | **Total**   |
+| --------------------- | ---------- | --------- | ------------ | ------------------- | ----------- |
+| EC2 (t2.micro)        | $24.75     | $296.25   | $0.00        | 1-3                 |             |
+| DynamoDB              | $13.06     | $156.72   | $205.20      | 1                   |             |
+| Elastic Load Balancer | 18.60      | 223.20    | $0.00        | 1                   |             |
+| **Total**             | $56.41     | $676.17   | $205.20      |                     | **$881.37** |
+
+These estimates are based on the following assumptions:
+
+- 3 instances of EC2 (t2.micro) running for 24 hours a day, 7 days a week.
+- DynamoDB has low usage as it is only used for storing user data which is unlikely to be accessed frequently.
+- Elastic Load Balancer is used to distribute traffic to the EC2 instances.
+
+You can view the cost breakdown in the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=7d038edf56b536a468eb3e0b4707ab9c8e642c79).
+
+When it comes to scaling the level one solution you can increase the number of EC2 instances to handle more traffic. You can also increase the size of the EC2 instances to handle more traffic. However, this will increase the cost of the solution significantly. Due to the nature of the website, it is unlikely that the website will need to scale to handle more traffic, allowing it to downscale to 2 EC2 instances and save on costs.
