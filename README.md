@@ -44,9 +44,23 @@
 
 ## Project Overview
 
-The goal of level 1 is to create a simple feedback system that allows users to submit feedback and view a random piece of feedback. The system should be hosted on AWS and use DynamoDB to store the feedback.
+The goal of this project is to create a simple feedback system that allows users to submit feedback and view a random piece of feedback. The system should be hosted on AWS and use DynamoDB to store the feedback.
 
 ## Implementation outline
+
+Level one is the basic implementation of the feedback system. It is hosted on EC2 instances and uses Auto Scaling to scale the number of instances up and down. The feedback system is hosted and managed on the EC2 instances.
+
+Level two is the advanced implementation of the feedback system. It is hosted on Elastic Beanstalk and uses CloudFront to distribute the content. The feedback system is hosted and managed on Elastic Beanstalk.
+
+**Important note:**
+
+In the implementations below, level two is somewhat reliant on level one. For example, the Elastic Beanstalk environment is created in the same VPC made in level one. This means that the VPC needs to be created before the Elastic Beanstalk environment.
+
+If you would like to skip the first you will need to complete the following steps from level one:
+
+- [Create a VPC](#virtual-private-cloud-vpc)
+- [Create a DynamoDB table](#dynamodb)
+- [Create a policy](#create-a-policy)
 
 ## Demonstration video
 
