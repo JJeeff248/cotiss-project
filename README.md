@@ -43,6 +43,7 @@
     - [Route 53](#route-53)
   - [Cost analysis](#cost-analysis)
     - [Level 1](#level-1)
+    - [Level 2](#level-2)
 
 ## Project Overview
 
@@ -569,7 +570,7 @@ All prices are in USD unless otherwise stated. Prices are current as of 2023-01-
 | EC2 (t2.micro)        | $21.46     | $258.72   | $0.00        | 3                   |             |
 | DynamoDB              | $13.06     | $156.72   | $205.20      | 1                   |             |
 | Elastic Load Balancer | $18.60     | $223.20   | $0.00        | 1                   |             |
-| **Total**             | $53.12     | $638.64   | $205.20      | 5                   | **$843.84** |
+| **Total**             | $53.12     | $638.64   | $205.20      | -                   | **$843.84** |
 
 These estimates are based on the following assumptions:
 
@@ -580,3 +581,26 @@ These estimates are based on the following assumptions:
 You can view the cost breakdown in the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=ba861503966e3242a7b03d8403a1debd6de1e261).
 
 When it comes to scaling the level one solution you can increase the number of EC2 instances to handle more traffic. You can also increase the size of the EC2 instances to handle more traffic. However, this will increase the cost of the solution significantly. Due to the nature of the website, it is unlikely that the website will need to scale to handle more traffic, allowing it to downscale to 2 EC2 instances and save on costs.
+
+### Level 2
+
+| Service               | Cost month | Cost year | Upfront Cost | Number of instances | Total       |
+| --------------------- | ---------- | --------- | ------------ | ------------------- | ----------- |
+| EC2 (t2.micro)        | $21.46     | $258.72   | $0.00        | 3                   |             |
+| S3                    | $0.08      | $1.00     | $0.00        | 2                   |             |
+| DynamoDB              | $13.06     | $156.72   | $205.20      | 1                   |             |
+| Route 53              | $0.54      | $6.48     | $0.00        | 1                   |             |
+| CloudFront            | $0.54      | $6.48     | $0.00        | 2                   |             |
+| Elastic Load Balancer | $18.60     | $223.20   | $0.00        | 1                   |             |
+| **Total**             | $54.22     | $651.60   | $205.20      | -                   | **$856.80** |
+
+These estimates are based on the following assumptions:
+
+- 3 instances of EC2 (t2.micro) running for 24 hours a day, 7 days a week.
+- CloudFront never reaches the free tier limit of data transfer.
+
+This solution comes out more expensive but not a significant amount. The main reason for the increase in cost is CloudFront and Route53 which are used to serve the website at a nice-looking URL compared to the automatically generated one of an Elastic Beanstalk application. The cost of CloudFront is based on the amount of data transferred which is unlikely to reach the free tier limit of 1TB. The cost of Route53 is based on the number of queries which is unlikely to reach the free tier limit of 1 million queries.
+
+You can view the cost breakdown in the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=0af4735604cf58014c868470ff3afec46f958efc).
+
+Scaling this solution is the same as scaling the level one solution.
