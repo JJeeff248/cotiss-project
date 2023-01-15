@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Feedback | Cotiss</title>
-    <link rel="icon" href="https://static.cotiss.chris-sa.com/cotiss-logo.svg">
+    <link rel="icon" href="https://static.chris-sa.com/cotiss-logo.svg">
 
     <link rel="stylesheet" href="https://www.cotiss.com/hs-fs/hub/20404630/hub_generated/template_assets/54247107751/1669780009956/marketplace/kalungi_com/Atlas_Pro_SaaS_Website_Theme/css/main.min.css" />
     <link rel="stylesheet" href="css/styles.css">
@@ -14,7 +14,7 @@
 
 <body>
     <header>
-        <img src="https://static.cotiss.chris-sa.com/cotiss-logo.svg" alt="Cotiss Logo">
+        <img src="https://static.chris-sa.com/cotiss-logo.svg" alt="Cotiss Logo">
         <h1>Honest-Feedback</h1>
     </header>
     <main>
