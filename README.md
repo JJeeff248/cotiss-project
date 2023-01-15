@@ -30,6 +30,17 @@
     - [Amazon Machine Image (AMI)](#amazon-machine-image-ami)
     - [Launch Template](#launch-template)
     - [Auto Scaling Group](#auto-scaling-group)
+  - [Implenentation - Level 2](#implenentation---level-2)
+    - [ZIP of the website](#zip-of-the-website)
+    - [IAM Role](#iam-role)
+    - [Elastic Beanstalk](#elastic-beanstalk)
+    - [S3 Bucket](#s3-bucket)
+    - [Route 53 - No hosted zone](#route-53---no-hosted-zone)
+    - [Amazon Certificate Manager](#amazon-certificate-manager)
+    - [CloudFront](#cloudfront)
+      - [Static bucket distribution](#static-bucket-distribution)
+      - [Elastic Beanstalk distribution](#elastic-beanstalk-distribution)
+    - [Route 53](#route-53)
 
 ## Project overview
 
@@ -374,3 +385,158 @@ The goal of level 1 is to deploy the feedback system on Auto Scaling EC2 instanc
 22. Paste the DNS name into a web browser and confirm the website is working.
 ![A screenshot displaying the website working](./images/asg_website.PNG)
 
+## Implenentation - Level 2
+
+### ZIP of the website
+
+1. Create a new file called `composer.json` in the root of the website directory.
+2. Add the below code to the file:
+
+   ```json
+   {
+     "require": {
+       "aws/aws-sdk-php": "^3.0"
+     }
+   }
+   ```
+
+3. Add an image to the index page with the following code (replacing `your-domain.com` with your domain name):
+
+   ```html
+   <img src="https://static.your-domain.com/cotiss-logo.svg" />
+   ```
+
+4. Zip the website directory including the `composer.json` and PHP files.
+
+### IAM Role
+
+1. Go to the [IAM Roles console](https://console.aws.amazon.com/iam/home?region=ap-southeast-2#/roles).
+2. Click "Create role".
+3. Select "EC2" as the service.
+4. Click "Next".
+5. Select the policy made in level 1 (i.e. `Cotiss-Feedback-DB-Policy`).
+6. Select the following three policies:
+   - `AWSElasticBeanstalkWebTier`
+   - `AWSElasticBeanstalkMulticontainerDocker`
+   - `AWSElasticBeanstalkWorkerTier`
+
+### Elastic Beanstalk
+
+1. Go to the [Elastic Beanstalk console](https://console.aws.amazon.com/elasticbeanstalk/home?region=ap-southeast-2#/gettingStarted).
+2. Click "Create application".
+3. Give the application a name (e.g. `Cotiss-EB-Application`).
+4. Select "PHP" as the platform.
+5. Select "Upload your code" as the application code and upload the zip file created in the previous section.
+6. Click "Configure more options".
+7. Change "Proxy server" to "Apache" under "Software".
+8. Change "Environment type" to "Load balanced" under "Capacity".
+9. Select the IAM role created in the previous section under "Security" and then "IAM instance profile".
+10. Select the VPC created in the first section of Level 1 under "Network".
+    1. Leave visibility as "Public".
+    2. Select the subnets created under the selected VPC for both "Load balancer subnets" and "Instance subnets".
+    3. Tick "Public IP addresses" under "Instance settings".
+11. Click "Create environment".
+
+### S3 Bucket
+
+1. Go to the [S3 console](https://s3.console.aws.amazon.com/s3/home?region=ap-southeast-2).
+2. Click "Create bucket".
+3. Name the bucket (e.g. `cotiss-static`).
+4. Leave everything else as default.
+5. Click "Create bucket".
+6. Upload your image to the bucket.
+
+### Route 53 - No hosted zone
+
+1. Go to the [Route 53 hosted zone console](https://us-east-1.console.aws.amazon.com/route53/v2/hostedzones#).
+2. Click "Create hosted zone".
+3. Enter a domain name you own (e.g. `your-domain.com`).
+4. Leave the type as "Public hosted zone".
+5. Click "Create hosted zone".
+
+### Amazon Certificate Manager
+
+1. Go to the [Amazon Certificate Manager console](https://console.aws.amazon.com/acm/home?region=us-east-1#/).
+2. Confirm your region is "US East (N. Virginia)".
+3. Click "Request a certificate".
+4. Select "Request a public certificate".
+5. Click "Next".
+6. Enter your fully qualified domain names:
+    - `your-domain.com`
+    - `*.your-domain.com` (This covers `static.your-domain.com`)
+7. Select "DNS validation".
+8. Select RSA as the key algorithm.
+9. Click "Request".
+10. Find your certificate and click on it.
+11. Click "Create records in Route 53".
+![A screenshot displaying the domains in the certificate](./images/acm_create_records.PNG)
+
+12. Wait for the certificate to be issued.
+
+### CloudFront
+
+#### Static bucket distribution
+
+1. Go to the [CloudFront console](https://console.aws.amazon.com/cloudfront/home).
+2. Click "Create distribution".
+3. Select the S3 bucket created in the previous section as the origin.
+4. Change "Origin access" to "Origin access control settings".
+   1. Create a new control setting. You only need to give it a name.
+![A screenshot displaying the origin access control settings](./images/cf_s3_origin.PNG)
+5. Select HTTPS only under "Viewer protocol policy".
+6. Add an alternate domain name (e.g. `static.your-domain.com`).
+7. Select your certificate created in the previous section.
+8. Click "Create distribution".
+9. Click "Copy policy" on the blue banner.
+![A screenshot of the blue banner](./images/cf_s3_policy.PNG)
+
+10. Click "Go to S3 bucket permissions to update policy" also in the blue banner.
+11. Click "Edit" on the bucket policy.
+12. Paste the policy copied from CloudFront.
+    - Right-click > Paste
+    - <kbd>ctrl</kbd> + <kbd>v</kbd>
+13. Click "Save changes".
+
+#### Elastic Beanstalk distribution
+
+1. Go to the [CloudFront console](https://console.aws.amazon.com/cloudfront/home).
+2. Click "Create distribution".
+3. Select the Elastic Load Balancer connected to the Elastic Beanstalk application as the origin.
+4. Select `GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE` under "Allowed HTTP methods".
+5. Change the cache policy to "CachingDisabled".
+6. Add an alternate domain name (e.g. `cotiss.your-domain.com`).
+7. Select your certificate created in the previous section.
+8. Click "Create distribution".
+9. Return to the [CloudFront console](https://console.aws.amazon.com/cloudfront/home).
+10. Click on the distribution created for the Elastic Beanstalk application.
+11. Switch to the "Behaviors" tab.
+12. Click "Create behavior".
+    1. Set the path pattern to `*`.
+    2. Select "Redirect HTTP to HTTPS" under "Viewer protocol policy".
+    3. Select `GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE` under "Allowed HTTP methods".
+    4. Change the cache policy to "CachingDisabled".
+    5. Click "Create behavior".
+
+![A screenshot displaying the behavior settings](./images/cf_behaviors.PNG)
+
+### Route 53
+
+1. Go to the [Route 53 hosted zone console](https://us-east-1.console.aws.amazon.com/route53/v2/hostedzones#).
+2. Click on the hosted zone created in the previous section or the hosted zone you want to use.
+3. Click "Create record".
+4. Click "Switch to quick create" if presented with the creation wizard.
+5. Enter `cotiss` as the name.
+6. Select "A" as the record type.
+7. Switch on alias mode.
+8. Choose "Alias to CloudFront distribution".
+9. Select the CloudFront distribution for the Elastic Beanstalk application.
+10. Click "Add another record".
+11. Enter `static` as the name.
+12. Repeat steps 5-8 but select the CloudFront distribution for the S3 bucket.
+13. Click "Create records".
+![A screenshot displaying the record settings](./images/r53_records.PNG)
+
+14. Wait for the changes to propagate.
+15. Check the website is working by visiting `cotiss.your-domain.com`.
+
+![A screenshot displaying the website](./images/final_website.PNG)
