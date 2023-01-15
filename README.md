@@ -7,7 +7,7 @@
 
 - [AWS Solution for an Honest Feedback System](#aws-solution-for-an-honest-feedback-system)
   - [Table of contents](#table-of-contents)
-  - [Project overview](#project-overview)
+  - [Project Overview](#project-overview)
   - [Implementation outline](#implementation-outline)
   - [Demonstration video](#demonstration-video)
   - [Files](#files)
@@ -30,7 +30,7 @@
     - [Amazon Machine Image (AMI)](#amazon-machine-image-ami)
     - [Launch Template](#launch-template)
     - [Auto Scaling Group](#auto-scaling-group)
-  - [Implenentation - Level 2](#implenentation---level-2)
+  - [Implementation - Level 2](#implementation---level-2)
     - [ZIP of the website](#zip-of-the-website)
     - [IAM Role](#iam-role)
     - [Elastic Beanstalk](#elastic-beanstalk)
@@ -42,7 +42,7 @@
       - [Elastic Beanstalk distribution](#elastic-beanstalk-distribution)
     - [Route 53](#route-53)
 
-## Project overview
+## Project Overview
 
 The goal of level 1 is to create a simple feedback system that allows users to submit feedback and view a random piece of feedback. The system should be hosted on AWS and use DynamoDB to store the feedback.
 
@@ -354,8 +354,8 @@ The goal of level 1 is to deploy the feedback system on Auto Scaling EC2 instanc
 ### Auto Scaling Group
 
 1. Go to the [EC2 Auto Scaling Groups console](https://console.aws.amazon.com/ec2/autoscaling/home?region=ap-southeast-2#AutoScalingGroups).
-2. Click "Create auto scaling group".
-3. Name the auto scaling group (e.g. `Cotiss-Feedback-ASG`).
+2. Click "Create auto-scaling group".
+3. Name the auto-scaling group (e.g. `Cotiss-Feedback-ASG`).
 4. Select the launch template created in the previous section.
 5. Change "Version" to "Latest version".
 6. Click "Next".
@@ -379,13 +379,14 @@ The goal of level 1 is to deploy the feedback system on Auto Scaling EC2 instanc
     - The correct VPC with subnets.
     - An application load balancer with a target group.
     - The correct capacity numbers.
-19. Click "Create auto scaling group".
+19. Click "Create auto-scaling group".
 20. Go to the [EC2 Load Balancers console](https://console.aws.amazon.com/ec2/v2/home?region=ap-southeast-2#LoadBalancers).
 21. Copy the DNS name of the load balancer.
 22. Paste the DNS name into a web browser and confirm the website is working.
+
 ![A screenshot displaying the website working](./images/asg_website.PNG)
 
-## Implenentation - Level 2
+## Implementation - Level 2
 
 ### ZIP of the website
 
@@ -403,7 +404,7 @@ The goal of level 1 is to deploy the feedback system on Auto Scaling EC2 instanc
 3. Add an image to the index page with the following code (replacing `your-domain.com` with your domain name):
 
    ```html
-   <img src="https://static.your-domain.com/cotiss-logo.svg" />
+   <img src="https://static.your-domain.com/cotiss-logo.svg" alt="Cotiss logo" />
    ```
 
 4. Zip the website directory including the `composer.json` and PHP files.
